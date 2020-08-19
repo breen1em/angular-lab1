@@ -2,20 +2,34 @@
   <section class="todo-container">
     <h1>TODO List</h1>
     <h2>A place to store your todos</h2>
-    <form class="form">
-      <input type="text" placeholder="Filter your todos" />
+    <form #filterForm="ngForm" (input)="setSearchTerm(filterForm)" class="form">
+      <input
+        type="text"
+        id="searchTerm"
+        name="searchTerm"
+        placeholder="Filter your todos"
+        ngModel 
+      />
     </form>
     <ol class="ordered-list">
-      <li *ngFor="let todo of todos">
+      <li *ngFor="let todo of todos; index as i">
         <div class="list-item">
-          <button class="complete" *ngIf = "todo.completed===false">Complete</button>
-          <p class="task" [ngClass]="{strike: todo.completed}">{{ todo.task }}</p>
-          <button>X</button>
+          <button
+            (click)="completeTask(i)"
+            class="complete"
+            *ngIf="todo.completed === false"
+          >
+            Complete
+          </button>
+          <p class="task" [ngClass]="{ strike: todo.completed }">
+            {{ todo.task }}
+          </p>
+          <button (click)="removeTask(i)">X</button>
         </div>
       </li>
     </ol>
-    <form class="form">
-      <input type="text" placeholder="Add your todos" />
+    <form #addTaskForm="ngForm" (ngSubmit)="addTask(addTaskForm)" class="form">
+      <input type="text" name="task" placeholder="Add your todos" ngModel />
       <button class="add">Add</button>
     </form>
   </section>
